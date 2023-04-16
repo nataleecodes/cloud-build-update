@@ -54,7 +54,7 @@ _If you are interested in contributing to kaniko, see
       - [Running kaniko in a Kubernetes cluster](#running-kaniko-in-a-kubernetes-cluster)
         - [Kubernetes secret](#kubernetes-secret)
       - [Running kaniko in gVisor](#running-kaniko-in-gvisor)
-      - [Running kaniko in Google Cloud Build](#running-kaniko-in-google-cloud-build)
+      - [Running kaniko in Cloud Build](#running-kaniko-in-cloud-build)
       - [Running kaniko in Docker](#running-kaniko-in-docker)
     - [Caching](#caching)
       - [Caching Layers](#caching-layers)
@@ -408,13 +408,13 @@ We pass in `--runtime=runsc` to use gVisor. This example mounts the current
 directory to `/workspace` for the build context and the `~/.config` directory
 for GCR credentials.
 
-#### Running kaniko in Google Cloud Build
+#### Running kaniko in Cloud Build
 
 Requirements:
 
 - A [build context](#kaniko-build-contexts)
 
-To run kaniko in GCB, add it to your build config as a build step:
+To run kaniko in Cloud Build, add it to your build config as a build step:
 
 ```yaml
 steps:
@@ -423,9 +423,11 @@ steps:
       [
         "--dockerfile=<path to Dockerfile within the build context>",
         "--context=dir://<path to build context>",
-        "--destination=<gcr.io/$PROJECT/$IMAGE:$TAG>",
+        "--destination=<${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE}>",
       ]
 ```
+
+Use the `--destination` flag to specify the Artifact Registry repository location, repository name, and image.
 
 kaniko will build and push the final image in this build step.
 
